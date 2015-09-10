@@ -1,21 +1,18 @@
 {
   "name": "speaking-deck",
-  "main": "elements/speaking-deck.html",
-  "dependencies": {
-    "iron-a11y-keys": "polymerelements/iron-a11y-keys#~1.0.2",
-    "iron-ajax": "polymerelements/iron-ajax#~1.0.4",
-    "neon-animation": "polymerelements/neon-animation#~1.0.6",
-    "paper-spinner": "polymerelements/paper-spinner#~1.0.2",
-    "paper-styles": "polymerelements/paper-styles#~1.0.11",
-    "voice-elements": "~1.0.0"
-  },
-  "version": "0.0.0",
+  "main": "speaking-deck.html",
+  "version": "0.0.1",
   "authors": [
     "Adrien Cahen <adrien@quantifind.com>"
   ],
   "description": "animated presentation deck w/ txt-2-speech",
   "keywords": [
-    "web-components"
+    "web-components",
+    "polymer",
+    "presentation",
+    "slides",
+    "powerpoint",
+    "speech synthesis"
   ],
   "license": "MIT",
   "ignore": [
@@ -25,6 +22,14 @@
     "test",
     "tests"
   ],
+  "dependencies": {
+    "iron-a11y-keys": "polymerelements/iron-a11y-keys#~1.0.2",
+    "iron-ajax": "polymerelements/iron-ajax#~1.0.4",
+    "neon-animation": "polymerelements/neon-animation#~1.0.6",
+    "paper-spinner": "polymerelements/paper-spinner#~1.0.2",
+    "paper-styles": "polymerelements/paper-styles#~1.0.11",
+    "voice-elements": "~1.0.0"
+  },
   "devDependencies": {
     "iron-component-page": "polymerelements/iron-component-page#~1.0.5"
   }
