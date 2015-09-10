@@ -28,7 +28,8 @@
 		"autoNext": 1
 	},
 	{
-		"content": "coming"
+		"content": "coming",
+		"autoNext": 2000
 	},
 	{
 		"speech": "you are late for your flight",
