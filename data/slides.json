@@ -1,0 +1,42 @@
+[
+	{
+		"silent": true,
+		"content": "Turn up the volume!"
+	},
+	{
+		"animation": "slide-from-left",
+		"style": "background-color: yellow",
+		"content": "I came in from the left..."
+	},
+	{
+		"animation": "slide-from-right",
+		"image": "http://www.q8.com/SiteCollectionImages/Gatwick%20Airport.jpg",
+		"style": "color: white; -webkit-text-stroke: 1px black;",
+		"content": "I came in from the right!"
+	},
+	{
+		"animation": "slide-down",
+		"content": "I came down from above!"
+	},
+	{
+		"animation": "slide-from-right",
+		"content": "slides"
+	},
+	{
+		"content": "keep"
+	},
+	{
+		"content": "coming"
+	},
+	{
+		"speech": "you are late for your flight",
+		"image": "http://www.pgal.com/media/portfolio/McCarran_115-web.jpg",
+		"content": ""
+	},
+	{
+		"animation": "scale-up",
+		"style": "background-color: orange",
+		"content": "and yet another slide"
+	}
+]
+

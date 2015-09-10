@@ -1,0 +1,186 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+
+<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../bower_components/paper-styles/color.html">
+<link rel="import" href="../bower_components/paper-styles/typography.html">
+
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/iron-a11y-keys/iron-a11y-keys.html">
+<link rel="import" href="../bower_components/paper-spinner/paper-spinner.html">
+<link rel="import" href="../bower_components/neon-animation/neon-animation.html">
+
+<link rel="import" href="../bower_components/voice-elements/dist/voice-player.html">
+
+<dom-module id="speaking-deck">
+	<template>
+		<style>
+			#slides {
+				@apply(--layout-fit);
+				cursor: default;
+				text-align: center;
+			}
+
+			neon-animatable { 
+				@apply(--layout-vertical);
+				@apply(--layout-center-center);
+			}
+
+			neon-animatable > .caption {
+				@apply(--paper-font-caption);
+				@apply(--layout-fixed-bottom);
+				margin: .4em;
+			}
+
+			neon-animatable > p {
+				@apply(--paper-font-display2);
+				padding: 0 1em;
+			}
+
+			paper-spinner {
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				margin-top: -14px;
+				margin-left: -14px;
+				z-index: -1;
+			}
+
+		</style>
+
+		<iron-ajax auto
+			url="[[slidesUri]]"
+			last-response="{{slides}}"
+			on-response="gotoFirstSlide"
+		></iron-ajax>
+
+		<iron-a11y-keys 
+			keys="space enter right down" 
+			target="[[keyEventTarget]]"
+			on-keys-pressed="gotoNextSlide"
+		></iron-a11y-keys>
+
+		<iron-a11y-keys 
+			keys="left up" 
+			target="[[keyEventTarget]]"
+			on-keys-pressed="gotoPrevSlide"
+		></iron-a11y-keys>
+
+		<voice-player id="speech"></voice-player>
+
+		<neon-animated-pages id="slides" selected="[[selected]]">
+			<template is="dom-repeat" items="[[slides]]">
+				<neon-animatable
+					style$="[[_slideStyle(item)]]"
+					entry-animation$="[[_entryAnim(index)]]"
+					exit-animation$="[[_oppositeAnim(index)]]"
+				>
+					<span class="caption">[[_caption(index)]]</span>
+					<p>[[item.content]]</p>
+				</neon-animatable>
+			</template>
+		</neon-animated-pages>
+
+		<paper-spinner
+			active$="[[!slides.length]]"
+		></paper-spinner>
+
+	</template>
+
+</dom-module>
+
+<script>
+
+Polymer({
+
+	is: 'speaking-deck',
+
+	properties: {
+		slidesUri: {
+			type: String
+		},
+		slides: {
+			type: Array
+		},
+		selected: {
+			type: Number,
+			reflectToAttribute: true,
+			observer: '_onSelectedChange'
+		},
+		nextSlide: {
+			type: Number,
+			computed: '_computeNextSlide(selected)'
+		},
+		keyEventTarget: {
+			type: Object,
+			value: function() {
+			  return document.body;
+			}
+		}
+	},
+
+	_entryAnim: function (index) {
+		var anim = this.get('slides.'+index+'.animation');
+		return (anim||'fade-in') + '-animation';
+	},
+
+	_oppositeAnim: function (index) {
+		var nextAnim = this.get('slides.'+this._computeNextSlide(index)+'.animation');
+		if(!nextAnim) {
+			return 'scale-down-animation';
+		}
+		return ({	'slide-from-left': 'slide-right',
+					'slide-from-right': 'slide-left'
+				}[nextAnim]||'fade-out') + '-animation';
+	},
+
+	_slideStyle: function (item) {
+		var out = '';
+		if(item.image) {
+			out += 'background-image: url('+item.image+');';
+			out += 'background-size: cover;';
+		}
+		if(item.style) {
+			out += item.style;
+		}
+		return out;
+	},
+
+	_computeNextSlide: function (index) {
+		return (index+1) % this.get('slides').length;
+	},
+
+	_caption: function (index) {
+		return [(index+1),this.get('slides').length].join(' / ');
+	},
+
+	listeners: {
+		'slides.tap': 'gotoNextSlide'
+	},
+
+	gotoNextSlide: function () {
+		this.$$('.neon-animating') || this.set('selected', this.get('nextSlide'));
+	},
+
+	gotoPrevSlide: function () {
+		this.$$('.neon-animating') || this.set('selected', Math.max(0, this.get('selected')-1));
+	},
+
+	gotoFirstSlide: function () {
+		this.async(function () {
+			this.set('selected', 0);
+		});
+	},
+
+	_onSelectedChange: function (val) {
+		var slide = this.get('slides.'+val);
+		this.$.speech.cancel();
+		if(!slide.silent) {
+			this.$.speech.set('text', slide.speech || slide.content);
+			this.$.speech.speak();			
+		}
+	}
+
+
+});
+
+</script>
