@@ -47,7 +47,7 @@
 
 		</style>
 
-		<iron-ajax auto
+		<iron-ajax auto$="[[slidesUri]]"
 			url="[[slidesUri]]"
 			last-response="{{slides}}"
 			on-response="gotoFirstSlide"
@@ -99,7 +99,8 @@ Polymer({
 			type: String
 		},
 		slides: {
-			type: Array
+			type: Array,
+			observer: 'gotoFirstSlide'
 		},
 		selected: {
 			type: Number,
