@@ -24,5 +24,8 @@
     "bower_components",
     "test",
     "tests"
-  ]
+  ],
+  "devDependencies": {
+    "iron-component-page": "polymerelements/iron-component-page#~1.0.5"
+  }
 }
