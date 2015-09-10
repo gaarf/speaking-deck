@@ -16,6 +16,6 @@ a polymer component that simulates a presentation.
 
 `open http://localhost:8080/components/speaking-deck/demo/`
 
-## jsbin
+### for the extra lazy
 
 http://jsbin.com/qovutezaji/1
