@@ -20,10 +20,12 @@
 	},
 	{
 		"animation": "slide-from-right",
-		"content": "slides"
+		"content": "slides",
+		"autoNext": 1
 	},
 	{
-		"content": "keep"
+		"content": "keep",
+		"autoNext": 1
 	},
 	{
 		"content": "coming"

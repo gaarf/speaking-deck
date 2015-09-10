@@ -154,7 +154,8 @@ Polymer({
 	},
 
 	listeners: {
-		'slides.tap': 'gotoNextSlide'
+		'slides.tap': 'gotoNextSlide',
+		'speech.end': '_onSpeechEnd'
 	},
 
 	gotoNextSlide: function () {
@@ -169,6 +170,13 @@ Polymer({
 		this.async(function () {
 			this.set('selected', 0);
 		});
+	},
+
+	_onSpeechEnd: function (e) {
+		var autoNext = this.get('slides.'+this.get('selected')+'.autoNext')
+		if('number' === typeof autoNext) {
+			this.async(this.gotoNextSlide, autoNext);
+		}
 	},
 
 	_onSelectedChange: function (val) {
