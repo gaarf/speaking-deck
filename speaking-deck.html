@@ -74,7 +74,7 @@
 					entry-animation$="[[_entryAnim(index)]]"
 					exit-animation$="[[_oppositeAnim(index)]]"
 				>
-					<span class="caption">[[_caption(index)]]</span>
+					<span class="caption" hidden$="[[item.autoNext]]">[[_caption(index)]]</span>
 					<p>[[item.content]]</p>
 				</neon-animatable>
 			</template>
@@ -121,11 +121,12 @@ Polymer({
 
 	_entryAnim: function (index) {
 		var anim = this.get('slides.'+index+'.animation');
-		return (anim||'fade-in') + '-animation';
+		return (anim||'slide-from-right') + '-animation';
 	},
 
 	_oppositeAnim: function (index) {
-		var nextAnim = this.get('slides.'+this._computeNextSlide(index)+'.animation');
+		var next = this.get('slides.'+this._computeNextSlide(index)),
+			nextAnim = next ? ( next.animation || 'slide-from-right' ) : '';
 		if(!nextAnim) {
 			return 'scale-down-animation';
 		}
