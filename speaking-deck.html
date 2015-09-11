@@ -75,7 +75,7 @@
 					exit-animation$="[[_oppositeAnim(index)]]"
 				>
 					<span class="caption" hidden$="[[item.autoNext]]">[[_caption(index)]]</span>
-					<p>[[item.content]]</p>
+					<p>[[_slideContent(item)]]</p>
 				</neon-animatable>
 			</template>
 		</neon-animated-pages>
@@ -137,14 +137,20 @@ Polymer({
 
 	_slideStyle: function (item) {
 		var out = '';
-		if(item.image) {
-			out += 'background-image: url('+item.image+');';
-			out += 'background-size: cover;';
-		}
-		if(item.style) {
-			out += item.style;
+		if(typeof item === 'object') {
+			if(item.image) {
+				out += 'background-image: url('+item.image+');';
+				out += 'background-size: cover;';
+			}
+			if(item.style) {
+				out += item.style;
+			}			
 		}
 		return out;
+	},
+
+	_slideContent: function (item) {
+		return (typeof item === 'string') ? item : item.content;
 	},
 
 	_computeNextSlide: function (index) {
@@ -185,7 +191,7 @@ Polymer({
 		var slide = this.get('slides.'+val);
 		this.$.speech.cancel();
 		if(!slide.silent) {
-			this.$.speech.set('text', slide.speech || slide.content);
+			this.$.speech.set('text', slide.speech || this._slideContent(slide));
 			this.$.speech.speak();			
 		}
 	}

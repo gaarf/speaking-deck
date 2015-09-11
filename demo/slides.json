@@ -17,6 +17,7 @@
 		"animation": "slide-down",
 		"content": "I came down from above!"
 	},
+	"I am just a string",
 	{
 		"content": "slides",
 		"autoNext": 1
