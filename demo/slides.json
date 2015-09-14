@@ -24,11 +24,13 @@
 	},
 	{
 		"animation": "opaque",
+		"style": "background-color: #EEE",
 		"content": "keep",
-		"autoNext": 1
+		"autoNext": 200
 	},
 	{
-		"animation": "fade-in",
+		"animation": "opaque",
+		"style": "background-color: #DDD",
 		"content": "coming",
 		"autoNext": 2000
 	},

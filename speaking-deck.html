@@ -27,7 +27,9 @@
 
 			neon-animatable > .caption {
 				@apply(--paper-font-caption);
-				@apply(--layout-fixed-bottom);
+				position: absolute;
+				bottom: 0;
+				width: 100%;
 				margin: .4em;
 			}
 
@@ -122,6 +124,12 @@ Polymer({
 			value: function() {
 			  return document.body;
 			}
+		},
+		isPaused: {
+			type: Boolean
+		},
+		isSpeaking: {
+			type: Boolean
 		}
 	},
 
@@ -187,11 +195,23 @@ Polymer({
 	},
 
 	startPause: function () {
-		// TODO implement pause
-		this.gotoNextSlide();
+		if(this.get('isSpeaking')) {
+			if(this.get('isPaused')) {
+				this.set('isPaused', false);
+				this.$.speech.resume();				
+			}
+			else {
+				this.set('isPaused', true);
+				this.$.speech.pause();
+			}
+		}
+		else {
+			this.gotoNextSlide();			
+		}
 	},
 
 	_onSpeechEnd: function (e) {
+		this.set('isSpeaking', false);
 		var autoNext = this.get('slides.'+this.get('selected')+'.autoNext')
 		if('number' === typeof autoNext) {
 			this.async(this.gotoNextSlide, autoNext);
@@ -203,6 +223,7 @@ Polymer({
 		this.$.speech.cancel();
 		if(!slide.silent) {
 			this.$.speech.set('text', slide.speech || this._slideContent(slide));
+			this.set('isSpeaking', true);
 			this.$.speech.speak();
 		}
 		else {
