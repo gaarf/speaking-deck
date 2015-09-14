@@ -221,21 +221,22 @@ Polymer({
 	},
 
 	_onNeonAnimationFinish: function () {
-		var slide = this.get('slides.'+this.get('selected'));
+		if(this.get('slides.'+this.get('selected')+'.silent')) {
+			this._onSpeechEnd();
+		}
+	},
+
+	_onSelectedChange: function (val) {
+		this.set('isPaused', false);
+		this.set('isSpeaking', false);
+		this.$.speech.cancel();
+
+		var slide = this.get('slides.'+val);
 		if(!slide.silent) {
 			this.$.speech.set('text', slide.speech || this._slideContent(slide));
 			this.set('isSpeaking', true);
 			this.$.speech.speak();
 		}
-		else {
-			this._onSpeechEnd();
-		}
-	},
-
-	_onSelectedChange: function () {
-		this.set('isPaused', false);
-		this.set('isSpeaking', false);
-		this.$.speech.cancel();
 	}
 
 
