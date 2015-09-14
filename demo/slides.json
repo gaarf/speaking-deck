@@ -14,6 +14,12 @@
 		"content": "I came in from the right!"
 	},
 	{
+		"animation": "fade-in",
+		"content": "I am silent",
+		"silent": true,
+		"autoNext": 2000
+	},
+	{
 		"animation": "slide-down",
 		"content": "I came down from above!"
 	},
