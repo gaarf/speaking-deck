@@ -144,7 +144,7 @@ Polymer({
 			}
 			if(item.style) {
 				out += item.style;
-			}			
+			}
 		}
 		return out;
 	},
@@ -192,7 +192,10 @@ Polymer({
 		this.$.speech.cancel();
 		if(!slide.silent) {
 			this.$.speech.set('text', slide.speech || this._slideContent(slide));
-			this.$.speech.speak();			
+			this.$.speech.speak();
+		}
+		else {
+			this._onSpeechEnd();
 		}
 	}
 

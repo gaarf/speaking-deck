@@ -23,7 +23,7 @@
 		"autoNext": 1
 	},
 	{
-		"animation": "fade-in",
+		"animation": "opaque",
 		"content": "keep",
 		"autoNext": 1
 	},
