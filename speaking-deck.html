@@ -142,6 +142,12 @@ Polymer({
 		}
 	},
 
+	created: function () {
+		if(!window.speechSynthesis) {
+			alert('Please use Chrome or Safari');
+		}
+	},
+
 	_entryAnim: function (index) {
 		var anim = this.get('slides.'+index+'.animation');
 		return (anim||'slide-from-right') + '-animation';
