@@ -177,6 +177,7 @@ Polymer({
 
 	listeners: {
 		'slides.tap': 'gotoNextSlide',
+    	'slides.neon-animation-finish': '_onNeonAnimationFinish',
 		'speech.end': '_onSpeechEnd'
 	},
 
@@ -219,6 +220,12 @@ Polymer({
 		}
 	},
 
+	_onNeonAnimationFinish: function () {
+		if(this.get('slides.'+this.get('selected')+'.silent')) {
+			this._onSpeechEnd();
+		}
+	},
+
 	_onSelectedChange: function (val) {
 		this.set('isPaused', false);
 		this.set('isSpeaking', false);
@@ -229,9 +236,6 @@ Polymer({
 			this.$.speech.set('text', slide.speech || this._slideContent(slide));
 			this.set('isSpeaking', true);
 			this.$.speech.speak();
-		}
-		else {
-			this.async(this._onSpeechEnd);
 		}
 	}
 
