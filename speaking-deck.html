@@ -133,10 +133,6 @@ Polymer({
 		}
 	},
 
-	attached: function () {
-		console.log('attached', this);
-	},
-
 	_entryAnim: function (index) {
 		var anim = this.get('slides.'+index+'.animation');
 		return (anim||'slide-from-right') + '-animation';
@@ -185,19 +181,11 @@ Polymer({
 	},
 
 	gotoNextSlide: function () {
-		if(this.$$('.neon-animating')) {
-			console.log('still animating...');
-			return this.async(this.gotoNextSlide, 500);
-		}
-		this.set('selected', this.get('nextSlide'));
+		this.$$('.neon-animating') || this.set('selected', this.get('nextSlide'));
 	},
 
 	gotoPrevSlide: function () {
-		if(this.$$('.neon-animating')) {
-			console.log('still animating...');
-			return this.async(this.gotoPrevSlide, 500);
-		}
-		this.set('selected', Math.max(0, this.get('selected')-1));
+		this.$$('.neon-animating') || this.set('selected', Math.max(0, this.get('selected')-1));
 	},
 
 	gotoFirstSlide: function () {
@@ -243,7 +231,7 @@ Polymer({
 			this.$.speech.speak();
 		}
 		else {
-			this._onSpeechEnd();
+			this.async(this._onSpeechEnd);
 		}
 	}
 
