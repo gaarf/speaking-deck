@@ -27,7 +27,9 @@
 
 			neon-animatable > .caption {
 				@apply(--paper-font-caption);
-				@apply(--layout-fixed-bottom);
+				position: absolute;
+				bottom: 0;
+				width: 100%;
 				margin: .4em;
 			}
 
@@ -54,7 +56,13 @@
 		></iron-ajax>
 
 		<iron-a11y-keys 
-			keys="space enter right down" 
+			keys="space" 
+			target="[[keyEventTarget]]"
+			on-keys-pressed="startPause"
+		></iron-a11y-keys>
+
+		<iron-a11y-keys 
+			keys="right down" 
 			target="[[keyEventTarget]]"
 			on-keys-pressed="gotoNextSlide"
 		></iron-a11y-keys>
@@ -74,8 +82,8 @@
 					entry-animation$="[[_entryAnim(index)]]"
 					exit-animation$="[[_oppositeAnim(index)]]"
 				>
-					<span class="caption">[[_caption(index)]]</span>
-					<p>[[item.content]]</p>
+					<span class="caption" hidden$="[[item.autoNext]]">[[_caption(index)]]</span>
+					<p>[[_slideContent(item)]]</p>
 				</neon-animatable>
 			</template>
 		</neon-animated-pages>
@@ -116,16 +124,23 @@ Polymer({
 			value: function() {
 			  return document.body;
 			}
+		},
+		isPaused: {
+			type: Boolean
+		},
+		isSpeaking: {
+			type: Boolean
 		}
 	},
 
 	_entryAnim: function (index) {
 		var anim = this.get('slides.'+index+'.animation');
-		return (anim||'fade-in') + '-animation';
+		return (anim||'slide-from-right') + '-animation';
 	},
 
 	_oppositeAnim: function (index) {
-		var nextAnim = this.get('slides.'+this._computeNextSlide(index)+'.animation');
+		var next = this.get('slides.'+this._computeNextSlide(index)),
+			nextAnim = next ? ( next.animation || 'slide-from-right' ) : '';
 		if(!nextAnim) {
 			return 'scale-down-animation';
 		}
@@ -136,14 +151,20 @@ Polymer({
 
 	_slideStyle: function (item) {
 		var out = '';
-		if(item.image) {
-			out += 'background-image: url('+item.image+');';
-			out += 'background-size: cover;';
-		}
-		if(item.style) {
-			out += item.style;
+		if(typeof item === 'object') {
+			if(item.image) {
+				out += 'background-image: url('+item.image+');';
+				out += 'background-size: cover;';
+			}
+			if(item.style) {
+				out += item.style;
+			}
 		}
 		return out;
+	},
+
+	_slideContent: function (item) {
+		return (typeof item === 'string') ? item : item.content;
 	},
 
 	_computeNextSlide: function (index) {
@@ -173,7 +194,24 @@ Polymer({
 		});
 	},
 
+	startPause: function () {
+		if(this.get('isSpeaking')) {
+			if(this.get('isPaused')) {
+				this.set('isPaused', false);
+				this.$.speech.resume();				
+			}
+			else {
+				this.set('isPaused', true);
+				this.$.speech.pause();
+			}
+		}
+		else {
+			this.gotoNextSlide();			
+		}
+	},
+
 	_onSpeechEnd: function (e) {
+		this.set('isSpeaking', false);
 		var autoNext = this.get('slides.'+this.get('selected')+'.autoNext')
 		if('number' === typeof autoNext) {
 			this.async(this.gotoNextSlide, autoNext);
@@ -184,8 +222,12 @@ Polymer({
 		var slide = this.get('slides.'+val);
 		this.$.speech.cancel();
 		if(!slide.silent) {
-			this.$.speech.set('text', slide.speech || slide.content);
-			this.$.speech.speak();			
+			this.$.speech.set('text', slide.speech || this._slideContent(slide));
+			this.set('isSpeaking', true);
+			this.$.speech.speak();
+		}
+		else {
+			this._onSpeechEnd();
 		}
 	}
 

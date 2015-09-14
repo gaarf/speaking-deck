@@ -9,7 +9,6 @@
 		"content": "I came in from the left..."
 	},
 	{
-		"animation": "slide-from-right",
 		"image": "http://www.q8.com/SiteCollectionImages/Gatwick%20Airport.jpg",
 		"style": "color: white; -webkit-text-stroke: 1px black;",
 		"content": "I came in from the right!"
@@ -18,16 +17,20 @@
 		"animation": "slide-down",
 		"content": "I came down from above!"
 	},
+	"I am just a string",
 	{
-		"animation": "slide-from-right",
 		"content": "slides",
 		"autoNext": 1
 	},
 	{
+		"animation": "opaque",
+		"style": "background-color: #EEE",
 		"content": "keep",
-		"autoNext": 1
+		"autoNext": 200
 	},
 	{
+		"animation": "opaque",
+		"style": "background-color: #DDD",
 		"content": "coming",
 		"autoNext": 2000
 	},
