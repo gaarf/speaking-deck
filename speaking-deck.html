@@ -54,7 +54,13 @@
 		></iron-ajax>
 
 		<iron-a11y-keys 
-			keys="space enter right down" 
+			keys="space" 
+			target="[[keyEventTarget]]"
+			on-keys-pressed="startPause"
+		></iron-a11y-keys>
+
+		<iron-a11y-keys 
+			keys="right down" 
 			target="[[keyEventTarget]]"
 			on-keys-pressed="gotoNextSlide"
 		></iron-a11y-keys>
@@ -178,6 +184,11 @@ Polymer({
 		this.async(function () {
 			this.set('selected', 0);
 		});
+	},
+
+	startPause: function () {
+		// TODO implement pause
+		this.gotoNextSlide();
 	},
 
 	_onSpeechEnd: function (e) {
