@@ -22,7 +22,15 @@
 
 			neon-animatable { 
 				@apply(--layout-vertical);
-				@apply(--layout-center-center);
+				@apply(--layout-center-justified);
+			}
+
+			neon-animatable.align-top { 
+				@apply(--layout-start-justified);
+			}
+
+			neon-animatable.align-bottom { 
+				@apply(--layout-end-justified);
 			}
 
 			neon-animatable > .caption {
@@ -78,6 +86,7 @@
 		<neon-animated-pages id="slides" selected="[[selected]]">
 			<template is="dom-repeat" items="[[slides]]">
 				<neon-animatable
+					class$="[[_slideClass(item)]]"
 					style$="[[_slideStyle(item)]]"
 					entry-animation$="[[_entryAnim(index)]]"
 					exit-animation$="[[_oppositeAnim(index)]]"
@@ -161,6 +170,14 @@ Polymer({
 			}
 		}
 		return out;
+	},
+
+	_slideClass: function (item) {
+		var out = [];
+		if(item.align) {
+			out.push('align-'+item.align);
+		}
+		return out.join(' ');
 	},
 
 	_slideContent: function (item) {

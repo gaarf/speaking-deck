@@ -1,7 +1,7 @@
 {
   "name": "speaking-deck",
   "main": "speaking-deck.html",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "authors": [
     "Adrien Cahen <adrien@quantifind.com>"
   ],
