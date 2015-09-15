@@ -7,7 +7,7 @@ a polymer component that simulates a presentation.
 ### instructions
 
 * `npm -g i polyserve`
-* Use Chrome for speech synthesis
+* Use Chrome or Safari for speech synthesis
 * demo/slides.json should be self-explanatory
 
 ### dependencies & running the demo
@@ -18,4 +18,4 @@ a polymer component that simulates a presentation.
 
 ### for the extra lazy
 
-http://jsbin.com/qovutezaji/1
+http://jsbin.com/dohuvuvave/edit?html,output

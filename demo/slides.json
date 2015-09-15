@@ -15,12 +15,14 @@
 	},
 	{
 		"animation": "fade-in",
+		"align": "bottom",
 		"content": "I am silent",
 		"silent": true,
 		"autoNext": 2000
 	},
 	{
 		"animation": "slide-down",
+		"align": "top",
 		"content": "I came down from above!"
 	},
 	"I am just a string",

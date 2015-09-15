@@ -11,6 +11,58 @@
 
 <link rel="import" href="../voice-elements/dist/voice-player.html">
 
+<!--
+
+`<speaking-deck>` creates a presentation from a JSON object describing the slides. It uses `voice-elements` for speech synthesis and `neon-animation` for transitions.
+
+The slides' definition can be remote:
+```
+  <speaking-deck 
+    slides-uri='slides.json'
+  ></speaking-deck>
+```
+
+Or defined inline:
+```
+  <speaking-deck 
+    slides='[
+		"hello world!",
+		{
+			"content": "I come from above",
+			"animation": "slide-down"
+		}
+    ]'
+  ></speaking-deck>
+```
+
+
+### Slide object properties
+
+A slide can be just a string, or an object with the following properties:
+
+Property 		| Description 					| Default
+----------------|-------------------------------|----------
+`content`		| text to show on the slide     | `undefined`
+`speech`   		| text to read out loud     	| same as `content`
+`silent`   		| prevents all speech     		| `false`
+`autoNext`   	| ms to wait before going to next slide | `false`
+`animation`   	| which neon-animation to use on entry | `slide-from-right`
+`align`   		| set to `top` or `bottom` to change text alignment | `undefined`
+`image`   		| image to use as background 	| `undefined`
+`style`   		| any additional CSS to assign to the slide | `''`
+
+### Keyboard Accessibility
+`<speaking-deck>` listens for keyboard events on the document's body. 
+
+Key | Effect
+----------------|-------------
+`space`   | Start / Pause
+`up` left`   | Go to previous slide
+`right` `bottom`   | Go to next slide
+
+
+@demo demo/index.html
+-->
 <dom-module id="speaking-deck">
 	<template>
 		<style>
@@ -22,7 +74,15 @@
 
 			neon-animatable { 
 				@apply(--layout-vertical);
-				@apply(--layout-center-center);
+				@apply(--layout-center-justified);
+			}
+
+			neon-animatable.align-top { 
+				@apply(--layout-start-justified);
+			}
+
+			neon-animatable.align-bottom { 
+				@apply(--layout-end-justified);
 			}
 
 			neon-animatable > .caption {
@@ -78,6 +138,7 @@
 		<neon-animated-pages id="slides" selected="[[selected]]">
 			<template is="dom-repeat" items="[[slides]]">
 				<neon-animatable
+					class$="[[_slideClass(item)]]"
 					style$="[[_slideStyle(item)]]"
 					entry-animation$="[[_entryAnim(index)]]"
 					exit-animation$="[[_oppositeAnim(index)]]"
@@ -133,6 +194,12 @@ Polymer({
 		}
 	},
 
+	created: function () {
+		if(!window.speechSynthesis) {
+			alert('Please use Chrome or Safari');
+		}
+	},
+
 	_entryAnim: function (index) {
 		var anim = this.get('slides.'+index+'.animation');
 		return (anim||'slide-from-right') + '-animation';
@@ -154,13 +221,23 @@ Polymer({
 		if(typeof item === 'object') {
 			if(item.image) {
 				out += 'background-image: url('+item.image+');';
-				out += 'background-size: cover;';
+				out += 'background-size: contain;';
+				out += 'background-repeat: no-repeat;';
+				out += 'background-position: center;';
 			}
 			if(item.style) {
 				out += item.style;
 			}
 		}
 		return out;
+	},
+
+	_slideClass: function (item) {
+		var out = [];
+		if(item.align) {
+			out.push('align-'+item.align);
+		}
+		return out.join(' ');
 	},
 
 	_slideContent: function (item) {
