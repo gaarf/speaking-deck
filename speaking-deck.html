@@ -169,7 +169,9 @@ Polymer({
 		if(typeof item === 'object') {
 			if(item.image) {
 				out += 'background-image: url('+item.image+');';
-				out += 'background-size: cover;';
+				out += 'background-size: contain;';
+				out += 'background-repeat: no-repeat;';
+				out += 'background-position: center;';
 			}
 			if(item.style) {
 				out += item.style;
