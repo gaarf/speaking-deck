@@ -11,6 +11,58 @@
 
 <link rel="import" href="../voice-elements/dist/voice-player.html">
 
+<!--
+
+`<speaking-deck>` creates a presentation from a JSON object describing the slides. It uses `voice-elements` for speech synthesis and `neon-animation` for transitions.
+
+The slides' definition can be remote:
+```
+  <speaking-deck 
+    slides-uri='slides.json'
+  ></speaking-deck>
+```
+
+Or defined inline:
+```
+  <speaking-deck 
+    slides='[
+		"hello world!",
+		{
+			"content": "I come from above",
+			"animation": "slide-down"
+		}
+    ]'
+  ></speaking-deck>
+```
+
+
+### Slide object properties
+
+A slide can be just a string, or an object with the following properties:
+
+Property 		| Description 					| Default
+----------------|-------------------------------|----------
+`content`		| text to show on the slide     | `undefined`
+`speech`   		| text to read out loud     	| same as `content`
+`silent`   		| prevents all speech     		| `false`
+`autoNext`   	| ms to wait before going to next slide | `false`
+`animation`   	| which neon-animation to use on entry | `slide-from-right`
+`align`   		| set to `top` or `bottom` to change text alignment | `undefined`
+`image`   		| image to use as background 	| `undefined`
+`style`   		| any additional CSS to assign to the slide | `''`
+
+### Keyboard Accessibility
+`<speaking-deck>` listens for keyboard events on the document's body. 
+
+Key | Effect
+----------------|-------------
+`space`   | Start / Pause
+`up` left`   | Go to previous slide
+`right` `bottom`   | Go to next slide
+
+
+@demo demo/index.html
+-->
 <dom-module id="speaking-deck">
 	<template>
 		<style>
