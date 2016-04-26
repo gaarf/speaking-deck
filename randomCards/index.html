@@ -1,0 +1,62 @@
+<!doctype html>
+<html>
+<head>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+
+  <title>B I N G O</title>
+
+  <script src="../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+  <link rel="import" href="../speaking-deck.html">
+
+  <style type="text/css">
+    html {
+      overflow: hidden;
+    }
+  </style>
+</head>
+<body unresolved>
+
+
+
+  <script>
+window.addEventListener('WebComponentsReady', function() {
+
+  function shuffle(array) {
+      var index, temp, counter = array.length;
+      while (counter > 0) {
+          index = Math.floor(Math.random() * counter);
+          counter--;
+          temp = array[counter];
+          array[counter] = array[index];
+          array[index] = temp;
+      }
+      return array;
+  }
+
+  var slides = [];
+  for (var i = 1; i < 55; i++) {
+    slides.push({
+      speech: 'Number '+i,
+      content: '',
+      image: 'loteria/'+i+'.jpg'
+    });
+  };
+
+
+  var deck = document.createElement('speaking-deck');
+  deck.set('slides', shuffle(slides));
+
+  document.body.appendChild(deck);
+
+  setInterval(function () {
+    deck.gotoNextSlide();
+  }, 10000);
+
+});
+  </script>
+
+</body>
+</html>
